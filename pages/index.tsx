@@ -1,3 +1,5 @@
-import Index from '../components/Index'
+import Index, {getStaticProps} from '../components/Index';
 
 export default Index;
+
+export { getStaticProps };
