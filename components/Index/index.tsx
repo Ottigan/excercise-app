@@ -1,7 +1,8 @@
+import { Prisma } from '@prisma/client';
+import cn from 'classnames';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import styles from './Index.module.scss';
-import { GetStaticProps } from 'next';
-import { Prisma } from '@prisma/client';
 
 interface IndexProps {
   user: Prisma.UserGetPayload<{}>;
@@ -18,8 +19,8 @@ export default function Index({ user }: IndexProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>MyGymPal</h1>
+      <main className={cn(styles.main, "bg-slate-800")}>
+        <h1 className={cn(styles.title, "text-xl text-sky-500")}>MyGymPal</h1>
       </main>
     </div>
   );
