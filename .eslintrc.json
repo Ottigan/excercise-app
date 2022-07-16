@@ -1,3 +1,15 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-trailing-spaces": "error",
+    "max-len": ["error", { "ignoreComments": true, "code": 120 }],
+    "indent": ["error", 2],
+    "no-console": ["error", { "allow": ["warn", "error", "info", "log"] }],
+    "prefer-const": ["error", { "destructuring": "all" }],
+    "no-underscore-dangle": "off",
+    "semi": ["warn", "always"],
+    "no-mixed-operators": "off",
+    "quote-props": ["error", "as-needed"],
+    "func-names": "off"
+  }
 }
