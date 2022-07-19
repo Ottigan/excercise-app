@@ -11,7 +11,7 @@ const Dashboard = () => <div className={styles.container}>
   </Head>
 
   <main className={cn(styles.main, 'bg-slate-800')}>
-    <h1 className={cn(styles.title, 'text-xl text-sky-500')}>MyGymPal</h1>
+    <h1 className={cn(styles.title, 'text-xl text-sky-50')}>MyGymPal</h1>
     <button onClick={() => signOut()}>Sign out</button>;
   </main>
 </div>;

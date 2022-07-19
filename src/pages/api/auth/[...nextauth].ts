@@ -1,7 +1,7 @@
 import NextAuth, { Session } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from 'utils/prisma';
+import { prisma } from '@db/client';
 
 interface SessionWithError extends Session {
   error?: boolean
