@@ -2,6 +2,8 @@ import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { Button } from 'components/Button';
+import { Loader } from 'components/Loader';
 
 export default function Main() {
   const { data: session, status } = useSession();
@@ -15,11 +17,11 @@ export default function Main() {
 
   const content = (() => {
     if (status === 'loading') {
-      return <h1>Loading...</h1>;
+      return <Loader/>;
     }
 
     if (session?.error || status === 'unauthenticated') {
-      return <button onClick={() => signIn('github')}>Sign in</button>;
+      return <Button onClick={() => signIn('github')}>Sign in</Button>;
     }
 
     return null;
@@ -33,7 +35,9 @@ export default function Main() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {content}
+      <div className="h-screen flex justify-center items-center bg-slate-800">
+        {content}
+      </div>
     </>
   );
 }

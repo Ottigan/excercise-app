@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { Button } from 'components/Button';
 import { signOut } from 'next-auth/react';
 import Head from 'next/head';
 import styles from './Index.module.scss';
@@ -11,8 +12,8 @@ const Dashboard = () => <div className={styles.container}>
   </Head>
 
   <main className={cn(styles.main, 'bg-slate-800')}>
-    <h1 className={cn(styles.title, 'text-xl text-sky-50')}>MyGymPal</h1>
-    <button onClick={() => signOut()}>Sign out</button>;
+    <h1 className={cn(styles.title, 'text-5xl text-sky-50 pb-3')}>MyGymPal</h1>
+    <Button onClick={() => signOut()}>Sign out</Button>;
   </main>
 </div>;
 
