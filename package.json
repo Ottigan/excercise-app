@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tsm:watch": "npx typed-scss-modules components -w"
+    "tsm:watch": "npx typed-scss-modules src -w"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.3",
