@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface LoaderProps {
-    text?: string;
+  text?: string;
 }
 
 const defaultProps = {

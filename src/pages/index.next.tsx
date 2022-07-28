@@ -17,7 +17,7 @@ export default function Main() {
 
   const content = (() => {
     if (status === 'loading') {
-      return <Loader/>;
+      return <Loader />;
     }
 
     if (session?.error || status === 'unauthenticated') {
@@ -35,9 +35,7 @@ export default function Main() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="h-screen flex justify-center items-center bg-slate-800">
-        {content}
-      </div>
+      <div className="h-screen flex justify-center items-center bg-slate-800">{content}</div>
     </>
   );
 }

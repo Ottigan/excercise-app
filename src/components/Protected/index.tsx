@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Loader } from 'components/Loader';
 
 interface ProtectedProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const Protected: React.FC<ProtectedProps> = ({ children }) => {
@@ -21,7 +21,11 @@ const Protected: React.FC<ProtectedProps> = ({ children }) => {
     return <>{children}</>;
   }
 
-  return <div className="h-screen w-screen flex justify-center items-center"><Loader/></div>;
+  return (
+    <div className="h-screen w-screen flex justify-center items-center">
+      <Loader />
+    </div>
+  );
 };
 
 export default Protected;

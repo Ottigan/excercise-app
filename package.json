@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "dev": "next dev",
     "lint": "next lint",
+    "start": "next start",
     "tsm:watch": "npx typed-scss-modules src -w"
   },
   "dependencies": {
@@ -16,9 +16,7 @@
     "next": "12.2.2",
     "next-auth": "^4.10.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "sass": "^1.53.0",
-    "typed-scss-modules": "^6.5.0"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@types/node": "18.0.4",
@@ -31,7 +29,9 @@
     "eslint-plugin-import": "^2.26.0",
     "postcss": "^8.4.14",
     "prisma": "^4.0.0",
+    "sass": "^1.53.0",
     "tailwindcss": "^3.1.6",
+    "typed-scss-modules": "^6.5.0",
     "typescript": "4.7.4"
   }
 }
