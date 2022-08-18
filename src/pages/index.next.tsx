@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { Button } from 'components/Button';
+import Button from 'components/Button';
 import { Loader } from 'components/Loader';
 
 export default function Main() {

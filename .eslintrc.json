@@ -12,9 +12,17 @@
     "sourceType": "module"
   },
   "rules": {
+    "max-len": [
+      "error",
+      {
+        "ignoreComments": true,
+        "code": 120,
+        "ignorePattern": "^\\s*className=",
+        "ignoreUrls": true
+      }
+    ],
     "import/extensions": ["error", "never", { "ignorePackages": true }],
     "no-trailing-spaces": "error",
-    "max-len": ["error", { "ignoreComments": true, "code": 120 }],
     "indent": ["error", 2],
     "no-console": ["error", { "allow": ["warn", "error", "info", "log"] }],
     "prefer-const": ["error", { "destructuring": "all" }],

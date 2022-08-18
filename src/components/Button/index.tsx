@@ -1,15 +1,33 @@
 import React from 'react';
+import cn from 'classnames';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from './styles.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   test?: string;
+  icon?: IconDefinition;
 }
 
-export const Button = (props: ButtonProps): React.ReactElement => {
-  const { children } = props;
+const defaultProps = {
+  type: 'button',
+};
+
+const Button = (props: ButtonProps): React.ReactElement => {
+  const { children, className, icon, ...rest } = props;
 
   return (
-    <button className="h-8 border-2 rounded-md px-3 bg-white text-black font-medium" {...props}>
-      {children}
+    <button
+      className={cn('border-2 rounded-md px-3 bg-white text-black text-lg font-medium', icon ? 'h-8 w-8' : 'h-10', className, styles.button)}
+      {...rest}
+    >
+      {icon
+        ? <FontAwesomeIcon icon={icon} size="xs"/>
+        : children}
     </button>
   );
 };
+
+Button.defaultProps = defaultProps;
+
+export default Button;
