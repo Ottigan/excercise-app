@@ -1,6 +1,6 @@
+import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Exercise } from '@prisma/client';
 import Button from 'components/Button';
-import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Table from 'components/Table';
 
 interface ExercisesProps {

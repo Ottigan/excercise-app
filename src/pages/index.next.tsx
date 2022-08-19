@@ -1,9 +1,9 @@
-import Head from 'next/head';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
+import { signIn, useSession } from 'next-auth/react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Main() {
   const { data: session, status } = useSession();

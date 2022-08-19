@@ -1,7 +1,7 @@
+import { prisma } from '@db/client';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '@db/client';
 import { db } from 'utils/db';
 
 export interface UserWithId extends User {

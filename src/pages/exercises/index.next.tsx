@@ -1,17 +1,17 @@
 import { Exercise } from '@prisma/client';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import Modal from 'components/Modal';
+import useFetch from 'hooks/useFetch';
+import useModal from 'hooks/useModal';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
 import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
-import Head from 'next/head';
-import useModal from 'hooks/useModal';
-import Modal from 'components/Modal';
-import useFetch from 'hooks/useFetch';
-import { formDataTemplate, reducer } from './utils';
 import Exercises from './components/Exercises';
+import { formDataTemplate, reducer } from './utils';
 
 interface ExercisesProps {
   exercises: Exercise[];

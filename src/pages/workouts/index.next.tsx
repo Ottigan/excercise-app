@@ -1,15 +1,15 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Workout } from '@prisma/client';
 import Button from 'components/Button';
+import Modal from 'components/Modal';
 import Table from 'components/Table';
+import useModal from 'hooks/useModal';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
 import { useCallback, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Head from 'next/head';
-import Modal from 'components/Modal';
-import useModal from 'hooks/useModal';
 
 interface WorkoutsProps {
   workouts: Workout[];

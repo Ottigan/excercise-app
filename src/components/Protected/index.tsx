@@ -1,7 +1,7 @@
-import { useSession } from 'next-auth/react';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Loader from 'components/Loader';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 interface ProtectedProps {
   children: React.ReactNode;

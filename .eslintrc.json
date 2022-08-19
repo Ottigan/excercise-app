@@ -3,16 +3,14 @@
     "es2021": true,
     "node": true
   },
-  "globals": {
-    "JSX": true
-  },
   "extends": [
     "next/core-web-vitals",
     "airbnb",
     "airbnb/hooks",
     "airbnb-typescript",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -22,18 +20,26 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "react"],
-  "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
-    "import/resolver": {
-      "typescript": {
-        "alwaysTryTypes": true,
-        "project": "./tsconfig.json"
-      }
-    }
-  },
   "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "func-names": "off",
+    "import/extensions": ["error", "never", { "ignorePackages": true }],
+    "import/prefer-default-export": "off",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/alt-text": "off",
+    "jsx-a11y/aria-role": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/iframe-has-title": "off",
+    "jsx-a11y/img-redundant-alt": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "jsx-a11y/no-redundant-roles": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
     "max-len": [
       "error",
       {
@@ -43,18 +49,12 @@
         "ignoreUrls": true
       }
     ],
-    "import/extensions": ["error", "never", { "ignorePackages": true }],
-    "no-trailing-spaces": "error",
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "no-undef": "off",
     "no-console": ["error", { "allow": ["warn", "error", "info", "log"] }],
-    "prefer-const": ["error", { "destructuring": "all" }],
-    "no-underscore-dangle": "off",
-    "semi": ["warn", "always"],
     "no-mixed-operators": "off",
-    "quote-props": ["error", "as-needed"],
-    "func-names": "off",
-    "import/prefer-default-export": "off",
+    "no-undef": "off",
+    "no-underscore-dangle": "off",
+    "no-trailing-spaces": "error",
+    "no-unused-vars": "off",
     "object-curly-newline": [
       "error",
       {
@@ -64,12 +64,11 @@
         "ExportDeclaration": { "multiline": true, "minProperties": 4 }
       }
     ],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "react/destructuring-assignment": "off",
-    "jsx-a11y/label-has-associated-control": ["error", { "assert": "nesting" }],
+    "prefer-const": ["error", { "destructuring": "all" }],
+    "quote-props": ["error", "as-needed"],
     "react/button-has-type": "off",
+    "react/destructuring-assignment": "off",
     "react/jsx-props-no-spreading": "off",
-    "jsx-a11y/control-has-associated-label": "off"
+    "semi": ["warn", "always"]
   }
 }

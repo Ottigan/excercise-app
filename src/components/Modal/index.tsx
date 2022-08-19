@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import cn from 'classnames';
 import Button from 'components/Button';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 import styles from './styles.module.scss';
 
 interface ModalProps {

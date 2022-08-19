@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import Link from 'next/link';
 import cn from 'classnames';
+import Link from 'next/link';
 
 interface HeaderProps {
   routes: string[];
