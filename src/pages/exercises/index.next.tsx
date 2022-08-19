@@ -122,54 +122,6 @@ export default function Page(props: ExercisesProps) {
             />
             <Input
               onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
-              value={formData.reps}
-              label="Reps"
-              name="reps"
-              type="number"
-              min={0}
-            />
-            <Input
-              onChange={handleChange}
               value={formData.rest}
               label="Rest (minutes)"
               name="rest"
