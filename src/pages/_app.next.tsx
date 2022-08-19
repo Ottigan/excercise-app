@@ -23,12 +23,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
       {routes.includes(router.pathname)
         ? (
           <Protected>
-            <Header routes={routes}/>
-            <Component {...pageProps}></Component>
+            <Header routes={routes} />
+            <Component {...pageProps} />
           </Protected>
         )
         : (
-          <Component {...pageProps}></Component>
+          <Component {...pageProps} />
         )}
     </SessionProvider>
   );

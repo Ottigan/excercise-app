@@ -14,14 +14,16 @@ const defaultProps = {
   isLoading: false,
 };
 
-const Table: React.FC<TableProps> = (props) => {
+function Table(props: TableProps) {
   const { children, className, isLoading } = props;
 
-  return <div className="relative">
-    {isLoading && <Loader isLoading={isLoading}/>}
-    <table className={cn('bg-slate-100', className, styles.table)}>{children}</table>
-  </div>;
-};
+  return (
+    <div className="relative">
+      {isLoading && <Loader isLoading={isLoading} />}
+      <table className={cn('bg-slate-100', className, styles.table)}>{children}</table>
+    </div>
+  );
+}
 
 Table.defaultProps = defaultProps;
 

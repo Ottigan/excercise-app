@@ -3,7 +3,7 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import { GetServerSideProps } from 'next';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
-import React, { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
 import Head from 'next/head';
@@ -90,8 +90,20 @@ export default function Page(props: ExercisesProps) {
       </Head>
 
       <main className="p-3">
+        <Button
+          onClick={() => {
+            setModalType('create');
+            handleFormData({ type: 'clear' });
+            handleModalVisibility();
+          }}
+          disabled={exerciseController.isLoading}
+          className="basis-4/12 mb-3"
+        >
+          Create
+
+        </Button>
         <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
-          <form className="flex flex-wrap gap-2 mb-9" autoComplete='off'>
+          <form className="flex flex-wrap gap-2 mb-9" autoComplete="off">
             <Input
               onChange={handleChange}
               value={formData.name}
@@ -140,27 +152,28 @@ export default function Page(props: ExercisesProps) {
               className="mb-3"
             />
             {modalType === 'create'
-              ? <Button
-                onClick={handleCreate}
-                type="submit"
-                disabled={exerciseController.isLoading}
-                className="basis-4/12" >Create</Button>
-              : <Button
-                onClick={handleUpdate}
-                type="submit"
-                disabled={exerciseController.isLoading}
-                className="basis-4/12" >Update</Button>
-            }
+              ? (
+                <Button
+                  onClick={handleCreate}
+                  type="submit"
+                  disabled={exerciseController.isLoading}
+                  className="basis-4/12"
+                >
+                  Create
+                </Button>
+              )
+              : (
+                <Button
+                  onClick={handleUpdate}
+                  type="submit"
+                  disabled={exerciseController.isLoading}
+                  className="basis-4/12"
+                >
+                  Update
+                </Button>
+              )}
           </form>
         </Modal>
-        <Button
-          onClick={() => {
-            setModalType('create');
-            handleFormData({ type: 'clear' });
-            handleModalVisibility();
-          }}
-          disabled={exerciseController.isLoading}
-          className="basis-4/12 mb-3">Create</Button>
         <Exercises
           isLoading={exerciseController.isLoading}
           exercises={exercises}

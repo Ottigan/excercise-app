@@ -6,14 +6,16 @@ import styles from './styles.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: IconDefinition;
+  type?: 'submit' | 'reset' | 'button' | undefined
 }
 
 const defaultProps = {
+  icon: null,
   type: 'button',
 };
 
-const Button = (props: ButtonProps): React.ReactElement => {
-  const { children, className, icon, ...rest } = props;
+function Button(props: ButtonProps) {
+  const { children, className, icon, type, ...rest } = props;
 
   return (
     <button
@@ -21,11 +23,11 @@ const Button = (props: ButtonProps): React.ReactElement => {
       {...rest}
     >
       {icon
-        ? <FontAwesomeIcon icon={icon} size="xs"/>
+        ? <FontAwesomeIcon icon={icon} size="xs" />
         : children}
     </button>
   );
-};
+}
 
 Button.defaultProps = defaultProps;
 

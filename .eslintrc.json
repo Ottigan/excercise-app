@@ -6,9 +6,22 @@
   "globals": {
     "JSX": true
   },
-  "extends": ["next/core-web-vitals", "airbnb-base"],
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime"
+  ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": 13,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "react"],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -32,7 +45,7 @@
     ],
     "import/extensions": ["error", "never", { "ignorePackages": true }],
     "no-trailing-spaces": "error",
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "no-undef": "off",
     "no-console": ["error", { "allow": ["warn", "error", "info", "log"] }],
     "prefer-const": ["error", { "destructuring": "all" }],
@@ -52,6 +65,11 @@
       }
     ],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/destructuring-assignment": "off",
+    "jsx-a11y/label-has-associated-control": ["error", { "assert": "nesting" }],
+    "react/button-has-type": "off",
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/control-has-associated-label": "off"
   }
 }

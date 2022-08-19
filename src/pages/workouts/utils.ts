@@ -15,10 +15,10 @@ export const formDataTemplate: FormData = {
 
 export function reducer(state: FormData, action: Action) {
   switch (action.type) {
-  case 'clear':
-    return formDataTemplate;
-  default: {
-    return { ...state, [action.type]: action.payload };
-  }
+    case 'clear':
+      return formDataTemplate;
+    default: {
+      return { ...state, [action.type]: action.payload };
+    }
   }
 }

@@ -3,7 +3,7 @@ import Button from 'components/Button';
 import Table from 'components/Table';
 import { GetServerSideProps } from 'next';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -41,12 +41,11 @@ export default function Page(props: WorkoutsProps) {
           <div>Hi mom!</div>
         </Modal>
         <Button onClick={handleModalVisibility} className="basis-4/12 mb-3">Create</Button>
-        <Table
-        >
+        <Table>
           <thead>
             <tr>
-              <th className='w-10/12'>Name</th>
-              <th></th>
+              <th className="w-10/12">Name</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -55,7 +54,7 @@ export default function Page(props: WorkoutsProps) {
                 <tr key={id}>
                   <td title={name}>{name}</td>
                   <td>
-                    <Button value={name} onClick={() => handleDelete(id)} icon={faTrash}/>
+                    <Button value={name} onClick={() => handleDelete(id)} icon={faTrash} />
                   </td>
                 </tr>
               ))

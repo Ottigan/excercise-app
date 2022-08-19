@@ -7,7 +7,7 @@ interface ProtectedProps {
   children: React.ReactNode;
 }
 
-const Protected: React.FC<ProtectedProps> = ({ children }) => {
+function Protected({ children }: ProtectedProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -18,14 +18,15 @@ const Protected: React.FC<ProtectedProps> = ({ children }) => {
   }, [router, session?.error, status]);
 
   if (status === 'authenticated') {
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
   }
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <Loader isLoading={true} />
+      <Loader isLoading />
     </div>
   );
-};
+}
 
 export default Protected;

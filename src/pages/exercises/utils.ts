@@ -33,20 +33,20 @@ export function reducer(state: FormData, action: Action) {
   });
 
   switch (action.type) {
-  case 'clear':
-    return formDataTemplate;
-  case 'set':
-    if (typeof action.payload === 'object') {
-      return { ...action.payload } as FormData;
+    case 'clear':
+      return formDataTemplate;
+    case 'set':
+      if (typeof action.payload === 'object') {
+        return { ...action.payload } as FormData;
+      }
+
+      return state;
+    default: {
+      const value = numberTypes.includes(action.type)
+        ? Number(action.payload)
+        : action.payload;
+
+      return { ...state, [action.type]: value };
     }
-
-    return state;
-  default: {
-    const value = numberTypes.includes(action.type)
-      ? Number(action.payload)
-      : action.payload;
-
-    return { ...state, [action.type]: value };
-  }
   }
 }
