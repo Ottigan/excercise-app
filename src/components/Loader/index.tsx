@@ -1,17 +1,21 @@
 import React from 'react';
+import cn from 'classnames';
+import styles from './styles.module.scss';
 
 interface LoaderProps {
-  text?: string;
+  isLoading: boolean;
 }
 
-const defaultProps = {
-  text: 'Loading...',
+const Loader: React.FC<LoaderProps> = (props) => {
+  const { isLoading } = props;
+
+  if (!isLoading) return null;
+
+  return <div
+    className={cn('absolute top-0 right-0 bottom-0 left-0 bg-gray-600/70 flex justify-center items-center')}
+  >
+    <div className={cn(styles.spinner)}/>
+  </div>;
 };
 
-export const Loader: React.FC<LoaderProps> = (props) => {
-  const { text } = props;
-
-  return <h1 className="text-white">{text}</h1>;
-};
-
-Loader.defaultProps = defaultProps;
+export default Loader;

@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Button from 'components/Button';
-import { Loader } from 'components/Loader';
+import Loader from 'components/Loader';
 
 export default function Main() {
   const { data: session, status } = useSession();
@@ -17,7 +17,7 @@ export default function Main() {
 
   const content = (() => {
     if (status === 'loading') {
-      return <Loader />;
+      return <Loader isLoading={true}/>;
     }
 
     if (session?.error || status === 'unauthenticated') {

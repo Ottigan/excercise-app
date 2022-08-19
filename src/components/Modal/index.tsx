@@ -1,13 +1,35 @@
 import React from 'react';
+import cn from 'classnames';
+import Button from 'components/Button';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import styles from './styles.module.scss';
 
 interface ModalProps {
-  text: string;
+  isVisible: boolean;
+  visibilityHandler: () => void;
+  children: React.ReactNode;
+  className?: string;
 }
 
-const Modal: React.FC<ModalProps> = (props) => {
-  const { text } = props;
-
-  return <h1>{text}</h1>;
+const defaultProps = {
+  className: '',
 };
+
+const Modal: React.FC<ModalProps> = (props) => {
+  const { isVisible, visibilityHandler, children, className } = props;
+
+  if (!isVisible) return null;
+
+  return (
+    <div onClick={(e) => e.currentTarget === e.target && visibilityHandler()} className={styles.modalComponent}>
+      <div className={cn(styles.modalComponentContent, className)}>
+        <Button className={styles.closeBtn} onClick={visibilityHandler} icon={faXmark}/>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+Modal.defaultProps = defaultProps;
 
 export default Modal;

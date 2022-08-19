@@ -9,6 +9,20 @@ generator js {
   previewFeatures = ["referentialIntegrity"]
 }
 
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  surname       String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  accounts  Account[]
+  sessions  Session[]
+  exercises Exercise[]
+  workouts  Workout[]
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -33,63 +47,55 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Exercise {
-  id              String            @id @default(cuid())
-  name            String
-  sets            Int?              @default(0)
-  reps            Int?              @default(0)
-  rest            Int?              @default(0)
-  weight          Int?              @default(0)
-  description     String?
-  User            User?             @relation(fields: [userId], references: [id])
-  userId          String?
-  WorkoutExercise WorkoutExercise[]
+  id          String  @id @default(cuid())
+  name        String
+  sets        Int?    @default(0)
+  reps        Int?    @default(0)
+  rest        Float?  @default(0)
+  weight      Float?  @default(0)
+  description String?
+  userId      String?
+
+  workoutExercise WorkoutExercise[]
+  user            User?             @relation(fields: [userId], references: [id])
 }
 
 model Workout {
-  id        String            @id @default(cuid())
-  name      String
+  id     String  @id @default(cuid())
+  name   String
+  userId String?
+
   exercises WorkoutExercise[]
-  User      User?             @relation(fields: [userId], references: [id])
-  userId    String?
+  user      User?             @relation(fields: [userId], references: [id])
 }
 
 model WorkoutExercise {
-  id          String               @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  sets        Int?                 @default(0)
-  reps        Int?                 @default(0)
-  rest        Int?                 @default(0)
-  weight      Int?                 @default(0)
+  sets        Int?    @default(0)
+  reps        Int?    @default(0)
+  rest        Float?  @default(0)
+  weight      Float?  @default(0)
   description String?
   workoutId   String?
   exerciseId  String
-  Workout     Workout?             @relation(fields: [workoutId], references: [id])
-  exercise    Exercise?            @relation(fields: [exerciseId], references: [id])
-  setData     WorkoutExerciseSet[]
+
+  setData  WorkoutExerciseSet[]
+  workout  Workout?             @relation(fields: [workoutId], references: [id])
+  exercise Exercise?            @relation(fields: [exerciseId], references: [id])
 }
 
 model WorkoutExerciseSet {
-  id                String           @id @default(cuid())
-  reps              Int?             @default(0)
-  WorkoutExercise   WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
+  id                String  @id @default(cuid())
+  reps              Int?    @default(0)
   workoutExerciseId String?
-}
 
-model User {
-  id            String     @id @default(cuid())
-  name          String
-  surname       String?
-  email         String?    @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  exercises     Exercise[]
-  workouts      Workout[]
+  workoutExercise WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
 }
 
 model VerificationToken {

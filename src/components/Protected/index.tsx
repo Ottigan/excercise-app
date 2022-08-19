@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Loader } from 'components/Loader';
+import Loader from 'components/Loader';
 
 interface ProtectedProps {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ const Protected: React.FC<ProtectedProps> = ({ children }) => {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <Loader />
+      <Loader isLoading={true} />
     </div>
   );
 };

@@ -1,47 +1,85 @@
 import { Exercise } from '@prisma/client';
 import Button from 'components/Button';
 import Input from 'components/Input';
-import Table from 'components/Table';
 import { GetServerSideProps } from 'next';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
-import React, { FormEvent, useCallback, useReducer, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Head from 'next/head';
+import useModal from 'hooks/useModal';
+import Modal from 'components/Modal';
+import useFetch from 'hooks/useFetch';
 import { formDataTemplate, reducer } from './utils';
+import Exercises from './components/Exercises';
 
 interface ExercisesProps {
   exercises: Exercise[];
 }
 
-export default function Exercises(props: ExercisesProps) {
+export default function ExercisesPage(props: ExercisesProps) {
   const [exercises, setExercises] = useState(props.exercises);
   const [formData, handleFormData] = useReducer(reducer, formDataTemplate);
+  const [isModalVisible, handleModalVisibility] = useModal();
+  const [modalType, setModalType] = useState<'create' | 'update'>('create');
+  const exerciseController = useFetch<Exercise[]>();
 
-  const handleSubmit = useCallback(async (e: FormEvent) => {
+  const handleCreate = useCallback((e: FormEvent) => {
     e.preventDefault();
 
-    fetch('/api/exercises', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data: Exercise[]) => {
-        setExercises(data);
+    exerciseController.exec({
+      url: '/api/exercises',
+      options: {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      },
+      onSucess: () => {
         handleFormData({ type: 'clear' });
-      })
-      .catch((err) => console.error(err));
-  }, [formData]);
+        handleModalVisibility();
+      },
+    });
+  }, [exerciseController, formData, handleModalVisibility]);
 
-  const handleDelete = useCallback((id: string) => {
-    fetch(`/api/exercises?id=${id}`, { method: 'DELETE' })
-      .then((res) => res.json())
-      .then((data: Exercise[]) => {
-        setExercises(data);
-      })
-      .catch((err) => console.error(err));
+  const handleUpdate = useCallback((e: FormEvent) => {
+    e.preventDefault();
+
+    exerciseController.exec({
+      url: '/api/exercises',
+      options: {
+        method: 'PATCH',
+        body: JSON.stringify(formData),
+      },
+      onSucess: () => {
+        handleFormData({ type: 'clear' });
+        handleModalVisibility();
+      },
+    });
+  }, [exerciseController, formData, handleModalVisibility]);
+
+  const handleDelete = useCallback((id: string) => exerciseController.exec({
+    url: `/api/exercises?id=${id}`,
+    options: {
+      method: 'DELETE',
+    },
+  }), [exerciseController]);
+
+  useEffect(() => {
+    if (exerciseController.data) {
+      setExercises(exerciseController.data);
+    }
+  }, [exerciseController.data]);
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { target: { value, name } } = e;
+
+    handleFormData({ type: name, payload: value });
   }, []);
+
+  const handleView = useCallback((exercise: Exercise) => {
+    handleFormData({ type: 'set', payload: exercise });
+    setModalType('update');
+    handleModalVisibility();
+  }, [handleModalVisibility]);
 
   return (
     <>
@@ -52,43 +90,131 @@ export default function Exercises(props: ExercisesProps) {
       </Head>
 
       <main className="p-3">
-        <form onSubmit={handleSubmit} className="flex flex-wrap gap-2 mb-9" autoComplete='off'>
-          <Input
-            onChange={({ target: { value, name } }) => handleFormData({ type: name, payload: value })}
-            value={formData.name}
-            label="Name"
-            name="name"
-          />
-          <Input
-            onChange={({ target: { value, name } }) => handleFormData({ type: name, payload: value })}
-            value={formData.description}
-            label="Description"
-            name="description"
-            className="mb-3"
-          />
-          <Button type="submit" className="basis-4/12">Create</Button>
-        </form>
-        <Table
-        >
-          <thead>
-            <tr>
-              <th className='w-4/12'>Name</th>
-              <th className='w-6/12'>Description</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {exercises.length
-              ? exercises.map(({ id, name, description }) => <tr key={id}>
-                <td title={name}>{name}</td>
-                <td title={description || ''}>{description}</td>
-                <td>
-                  <Button value={name} onClick={() => handleDelete(id)} icon={faTrash}/>
-                </td>
-              </tr>)
-              : <tr><td colSpan={2} style={{ textAlign: 'center' }}>No exercises...</td></tr>}
-          </tbody>
-        </Table>
+        <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
+          <form className="flex flex-wrap gap-2 mb-9" autoComplete='off'>
+            <Input
+              onChange={handleChange}
+              value={formData.name}
+              label="Name"
+              name="name"
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.description}
+              label="Description"
+              name="description"
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.sets}
+              label="Sets"
+              name="sets"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.reps}
+              label="Reps"
+              name="reps"
+              type="number"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.rest}
+              label="Rest (minutes)"
+              name="rest"
+              type="number"
+              step="0.1"
+              min={0}
+            />
+            <Input
+              onChange={handleChange}
+              value={formData.weight}
+              label="Weight"
+              name="weight"
+              type="number"
+              step="0.1"
+              min={0}
+              className="mb-3"
+            />
+            {modalType === 'create'
+              ? <Button
+                onClick={handleCreate}
+                type="submit"
+                disabled={exerciseController.isLoading}
+                className="basis-4/12" >Create</Button>
+              : <Button
+                onClick={handleUpdate}
+                type="submit"
+                disabled={exerciseController.isLoading}
+                className="basis-4/12" >Update</Button>
+            }
+          </form>
+        </Modal>
+        <Button
+          onClick={() => {
+            setModalType('create');
+            handleFormData({ type: 'clear' });
+            handleModalVisibility();
+          }}
+          disabled={exerciseController.isLoading}
+          className="basis-4/12 mb-3">Create</Button>
+        <Exercises
+          isLoading={exerciseController.isLoading}
+          exercises={exercises}
+          handleView={handleView}
+          handleDelete={handleDelete}
+        />
       </main>
     </>
   );

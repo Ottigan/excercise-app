@@ -1,0 +1,37 @@
+@use 'styles/variables';
+
+.modalComponent {
+  position: fixed;
+  z-index: variables.$modal-z-index;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5rem;
+  @apply bg-gray-900/70;
+
+  .modalComponentContent {
+    position: relative;
+    top: 3rem;
+    width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    padding: 1rem;
+    padding-top: 3rem;
+    margin: 1.5rem;
+    @apply border-solid;
+    @apply border-2;
+    @apply bg-slate-800;
+    @apply border-gray-400;
+    @apply rounded-md;
+
+    .closeBtn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  }
+}

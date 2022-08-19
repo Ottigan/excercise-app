@@ -1,10 +1,12 @@
 import React from 'react';
 import cn from 'classnames';
+import Loader from 'components/Loader';
 import styles from './styles.module.scss';
 
 interface TableProps {
   className?: string;
-    children: React.ReactNode;
+  children: React.ReactNode;
+  isLoading: boolean
 }
 
 const defaultProps = {
@@ -12,9 +14,12 @@ const defaultProps = {
 };
 
 const Table: React.FC<TableProps> = (props) => {
-  const { children, className } = props;
+  const { children, className, isLoading } = props;
 
-  return <table className={cn('bg-slate-100', className, styles.table)}>{children}</table>;
+  return <div className="relative">
+    {isLoading && <Loader isLoading={isLoading}/>}
+    <table className={cn('bg-slate-100', className, styles.table)}>{children}</table>
+  </div>;
 };
 
 Table.defaultProps = defaultProps;

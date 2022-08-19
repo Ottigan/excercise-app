@@ -8,6 +8,8 @@ import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Head from 'next/head';
+import Modal from 'components/Modal';
+import useModal from 'hooks/useModal';
 
 interface WorkoutsProps {
   workouts: Workout[];
@@ -15,12 +17,10 @@ interface WorkoutsProps {
 
 export default function Workouts(props: WorkoutsProps) {
   const [workouts, setWorkouts] = useState(props.workouts);
+  const [isModalVisible, handleModalVisibility] = useModal();
 
-  const handleDelete = useCallback((name: string) => {
-    fetch('/api/workouts', {
-      method: 'DELETE',
-      body: JSON.stringify({ name }),
-    })
+  const handleDelete = useCallback((id: string) => {
+    fetch(`/api/workouts?id=${id}`, { method: 'DELETE' })
       .then((res) => res.json())
       .then((data: Workout[]) => {
         setWorkouts(data);
@@ -37,7 +37,10 @@ export default function Workouts(props: WorkoutsProps) {
       </Head>
 
       <main className="p-3">
-        <Button className="basis-4/12 mb-3">Create</Button>
+        <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
+          <div>Hi mom!</div>
+        </Modal>
+        <Button onClick={handleModalVisibility} className="basis-4/12 mb-3">Create</Button>
         <Table
         >
           <thead>
@@ -52,7 +55,7 @@ export default function Workouts(props: WorkoutsProps) {
                 <tr key={id}>
                   <td title={name}>{name}</td>
                   <td>
-                    <Button value={name} onClick={() => handleDelete(name)} icon={faTrash}/>
+                    <Button value={name} onClick={() => handleDelete(id)} icon={faTrash}/>
                   </td>
                 </tr>
               ))
