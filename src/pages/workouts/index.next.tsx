@@ -15,7 +15,7 @@ interface WorkoutsProps {
   workouts: Workout[];
 }
 
-export default function Workouts(props: WorkoutsProps) {
+export default function Page(props: WorkoutsProps) {
   const [workouts, setWorkouts] = useState(props.workouts);
   const [isModalVisible, handleModalVisibility] = useModal();
 

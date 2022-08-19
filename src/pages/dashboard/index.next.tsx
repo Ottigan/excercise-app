@@ -4,7 +4,7 @@ import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import styles from './index.module.scss';
 
-export default function Dashboard() {
+export default function Page() {
   const { data: session } = useSession();
 
   const greeting = session?.user ? `Welcome ${session.user.name}!` : 'Welcome stranger!';

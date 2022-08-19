@@ -1,9 +1,13 @@
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import Header from 'components/Header';
 import Protected from 'components/Protected';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import Header from 'components/Header';
 import '../styles/globals.css';
+
+config.autoAddCss = false;
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();

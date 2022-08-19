@@ -6,11 +6,12 @@ import styles from './styles.module.scss';
 interface TableProps {
   className?: string;
   children: React.ReactNode;
-  isLoading: boolean
+  isLoading?: boolean
 }
 
 const defaultProps = {
   className: '',
+  isLoading: false,
 };
 
 const Table: React.FC<TableProps> = (props) => {

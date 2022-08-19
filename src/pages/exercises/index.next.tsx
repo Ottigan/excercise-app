@@ -17,7 +17,7 @@ interface ExercisesProps {
   exercises: Exercise[];
 }
 
-export default function ExercisesPage(props: ExercisesProps) {
+export default function Page(props: ExercisesProps) {
   const [exercises, setExercises] = useState(props.exercises);
   const [formData, handleFormData] = useReducer(reducer, formDataTemplate);
   const [isModalVisible, handleModalVisibility] = useModal();
