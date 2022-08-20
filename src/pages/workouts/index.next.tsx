@@ -1,15 +1,18 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Workout } from '@prisma/client';
 import Button from 'components/Button';
+import Input from 'components/Input';
 import Modal from 'components/Modal';
-import Table from 'components/Table';
+import useFetch from 'hooks/useFetch';
 import useModal from 'hooks/useModal';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
-import { useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
+import Exercises from './components/Exercises';
+import Workouts from './components/Workouts';
+import { formDataTemplate, reducer } from './utils';
 
 interface WorkoutsProps {
   workouts: Workout[];
@@ -17,16 +20,67 @@ interface WorkoutsProps {
 
 export default function Page(props: WorkoutsProps) {
   const [workouts, setWorkouts] = useState(props.workouts);
+  const [formData, handleFormData] = useReducer(reducer, formDataTemplate);
   const [isModalVisible, handleModalVisibility] = useModal();
+  const [modalType, setModalType] = useState<'create' | 'update'>('create');
+  const workoutController = useFetch<Workout[]>();
 
-  const handleDelete = useCallback((id: string) => {
-    fetch(`/api/workouts?id=${id}`, { method: 'DELETE' })
-      .then((res) => res.json())
-      .then((data: Workout[]) => {
-        setWorkouts(data);
-      })
-      .catch((err) => console.error(err));
+  const handleCreate = useCallback((e: FormEvent) => {
+    e.preventDefault();
+
+    workoutController.exec({
+      url: '/api/workouts',
+      options: {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      },
+      onSucess: () => {
+        handleFormData({ type: 'clear' });
+        handleModalVisibility();
+      },
+    });
+  }, [formData, handleModalVisibility, workoutController]);
+
+  const handleUpdate = useCallback((e: FormEvent) => {
+    e.preventDefault();
+
+    workoutController.exec({
+      url: '/api/workouts',
+      options: {
+        method: 'PATCH',
+        body: JSON.stringify(formData),
+      },
+      onSucess: () => {
+        handleFormData({ type: 'clear' });
+        handleModalVisibility();
+      },
+    });
+  }, [formData, handleModalVisibility, workoutController]);
+
+  const handleDelete = useCallback((id: string) => workoutController.exec({
+    url: `/api/workouts?id=${id}`,
+    options: {
+      method: 'DELETE',
+    },
+  }), [workoutController]);
+
+  useEffect(() => {
+    if (workoutController.data) {
+      setWorkouts(workoutController.data);
+    }
+  }, [workoutController.data]);
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { target: { value, name } } = e;
+
+    handleFormData({ type: name, payload: value });
   }, []);
+
+  const handleView = useCallback((workout: Workout) => {
+    handleFormData({ type: 'set', payload: workout });
+    setModalType('update');
+    handleModalVisibility();
+  }, [handleModalVisibility]);
 
   return (
     <>
@@ -38,29 +92,44 @@ export default function Page(props: WorkoutsProps) {
 
       <main className="p-3">
         <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
-          <div>Hi mom!</div>
+          <form className="flex flex-wrap gap-2 mb-9" autoComplete="off">
+            <Input
+              onChange={handleChange}
+              value={formData.name}
+              label="Name"
+              name="name"
+            />
+            <Exercises />
+            {modalType === 'create'
+              ? (
+                <Button
+                  onClick={handleCreate}
+                  type="submit"
+                  disabled={workoutController.isLoading}
+                  className="basis-4/12"
+                >
+                  Create
+                </Button>
+              )
+              : (
+                <Button
+                  onClick={handleUpdate}
+                  type="submit"
+                  disabled={workoutController.isLoading}
+                  className="basis-4/12"
+                >
+                  Update
+                </Button>
+              )}
+          </form>
         </Modal>
         <Button onClick={handleModalVisibility} className="basis-4/12 mb-3">Create</Button>
-        <Table>
-          <thead>
-            <tr>
-              <th className="w-10/12">Name</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {workouts.length
-              ? workouts.map(({ id, name }) => (
-                <tr key={id}>
-                  <td title={name}>{name}</td>
-                  <td>
-                    <Button value={name} onClick={() => handleDelete(id)} icon={faTrash} />
-                  </td>
-                </tr>
-              ))
-              : <tr><td colSpan={2} style={{ textAlign: 'center' }}>No workouts...</td></tr>}
-          </tbody>
-        </Table>
+        <Workouts
+          isLoading={workoutController.isLoading}
+          workouts={workouts}
+          handleView={handleView}
+          handleDelete={handleDelete}
+        />
       </main>
     </>
   );

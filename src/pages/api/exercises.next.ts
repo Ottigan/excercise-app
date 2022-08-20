@@ -20,29 +20,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await db.exercise.create({ data: exercise });
       const exercises = await db.exercise.findMany({ where: { userId } });
 
-      // const workout = {
-      //   name: 'Test',
-      //   userId,
-      //   exercises: {
-      //     create: exercises.map((e) => ({
-      //       name: e.name,
-      //       sets: e.sets,
-      //       reps: e.reps,
-      //       rest: e.rest,
-      //       weight: e.weight,
-      //       description: e.description,
-      //       exerciseId: e.id,
-      //       setData: {
-      //         create: {
-      //           reps: 0,
-      //         },
-      //       },
-      //     })),
-      //   },
-      // };
-
-      // await db.workout.create({ data: workout });
-
       res.status(200).json(exercises);
     }
       break;

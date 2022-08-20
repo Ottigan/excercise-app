@@ -67,6 +67,7 @@
     "prefer-const": ["error", { "destructuring": "all" }],
     "quote-props": ["error", "as-needed"],
     "react/button-has-type": "off",
+    "react/static-property-placement": "off",
     "react/destructuring-assignment": "off",
     "react/jsx-props-no-spreading": "off",
     "semi": ["warn", "always"]

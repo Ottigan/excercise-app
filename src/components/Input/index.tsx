@@ -17,9 +17,9 @@ function Input(props: InputProps) {
   const { className, label, ...rest } = props;
 
   return (
-    <label className={cn('w-full text', className)}>
+    <label className={cn('w-full', className)}>
       {label && <span className="text-white font-semibold">{label}</span>}
-      <input className={cn('h-12 p-2 w-full rounded-md outline-none text-2xl')} {...rest} />
+      <input className={cn('h-10 p-2 w-full rounded-md outline-none text-xl')} {...rest} />
     </label>
   );
 }
