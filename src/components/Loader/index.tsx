@@ -2,8 +2,12 @@ import cn from 'classnames';
 import styles from './styles.module.scss';
 
 interface LoaderProps {
-  isLoading: boolean;
+  isLoading?: boolean;
 }
+
+const defaultProps = {
+  isLoading: true,
+};
 
 function Loader(props: LoaderProps) {
   const { isLoading } = props;
@@ -18,5 +22,7 @@ function Loader(props: LoaderProps) {
     </div>
   );
 }
+
+Loader.defaultProps = defaultProps;
 
 export default Loader;

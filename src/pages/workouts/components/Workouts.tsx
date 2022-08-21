@@ -1,12 +1,12 @@
 import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Workout } from '@prisma/client';
 import Button from 'components/Button';
 import Table from 'components/Table';
+import { WorkoutWithExercises } from 'types';
 
 interface ExercisesProps {
   isLoading: boolean,
-  workouts: Workout[];
-  handleView: (workout: Workout) => void
+  workouts: WorkoutWithExercises[];
+  handleView: (workout: WorkoutWithExercises) => void
   handleDelete: (id: string) => void
 }
 
@@ -17,7 +17,7 @@ function Exercises(props: ExercisesProps) {
     <Table isLoading={isLoading}>
       <thead>
         <tr>
-          <th className="w-10/12">Name</th>
+          <th className="w-full">Name</th>
           <th />
         </tr>
       </thead>

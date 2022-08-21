@@ -1,42 +1,47 @@
-import { Workout } from '@prisma/client';
-
-export interface FormData {
-  name: string;
-}
-
-type FormDataKeys = keyof FormData;
+import { WorkoutExercise } from '@prisma/client';
+import { WorkoutWithExercises } from 'types';
 
 export interface Action {
   type: string;
-  payload?: string | Workout;
+  payload?: string | WorkoutExercise[] | WorkoutWithExercises;
 }
 
-export const formDataTemplate: FormData = {
+export const formDataTemplate: WorkoutWithExercises = {
+  id: '',
   name: '',
+  userId: '',
+  exercises: [] as WorkoutExercise[],
 };
 
-export function reducer(state: FormData, action: Action) {
-  const numberTypes = Object.keys(formDataTemplate).filter((key) => {
-    const value = formDataTemplate[key as FormDataKeys];
-
-    return typeof value === 'number';
-  });
-
+export function reducer(state: WorkoutWithExercises, action: Action) {
   switch (action.type) {
     case 'clear':
       return formDataTemplate;
     case 'set':
       if (typeof action.payload === 'object') {
-        return { ...action.payload } as FormData;
+        return { ...action.payload } as WorkoutWithExercises;
       }
 
       return state;
     default: {
-      const value = numberTypes.includes(action.type)
-        ? Number(action.payload)
-        : action.payload;
+      const value = action.payload;
 
       return { ...state, [action.type]: value };
     }
   }
+}
+
+export function getTemplate() {
+  const exerciseTemplate = {
+    id: Math.random().toString(),
+    name: '',
+    sets: 0,
+    reps: 0,
+    rest: 0,
+    weight: 0,
+    workoutId: null,
+    exerciseId: '',
+  };
+
+  return exerciseTemplate;
 }

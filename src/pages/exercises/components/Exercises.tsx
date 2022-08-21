@@ -18,7 +18,7 @@ function Exercises(props: ExercisesProps) {
       <thead>
         <tr>
           <th className="w-4/12">Name</th>
-          <th className="w-6/12">Description</th>
+          <th className="w-full">Description</th>
           <th />
         </tr>
       </thead>

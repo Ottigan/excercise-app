@@ -26,7 +26,7 @@ export const formDataTemplate: FormData = {
 };
 
 export function reducer(state: FormData, action: Action) {
-  const numberTypes = Object.keys(formDataTemplate).filter((key) => {
+  const numberTypes = Object.values(formDataTemplate).filter((key) => {
     const value = formDataTemplate[key as FormDataKeys];
 
     return typeof value === 'number';

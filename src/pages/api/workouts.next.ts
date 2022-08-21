@@ -1,5 +1,5 @@
-import { Workout } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { WorkoutWithExercises } from 'types';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
 import { authOptions, UserWithId } from './auth/[...nextauth].next';
@@ -9,58 +9,73 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case 'POST': {
-      const data = JSON.parse(req.body) as Workout;
+      const { name, exercises } = JSON.parse(req.body) as WorkoutWithExercises;
       const userId = (session?.user as UserWithId).id;
 
-      const workout = {
-        ...data,
-        userId,
-      };
+      await db.workout.create({
+        data: {
+          name,
+          userId,
+          exercises: {
+            create: exercises.map((e) => ({
+              name: e.name,
+              sets: e.sets,
+              reps: e.reps,
+              rest: e.rest,
+              weight: e.weight,
+              exerciseId: e.exerciseId,
+            })),
+          },
+        },
+      });
 
-      await db.workout.create({ data: workout });
-      const workouts = await db.workout.findMany({ where: { userId } });
-
-      // const workout = {
-      //   name: 'Test',
-      //   userId,
-      //   exercises: {
-      //     create: exercises.map((e) => ({
-      //       name: e.name,
-      //       sets: e.sets,
-      //       reps: e.reps,
-      //       rest: e.rest,
-      //       weight: e.weight,
-      //       description: e.description,
-      //       exerciseId: e.id,
-      //       setData: {
-      //         create: {
-      //           reps: 0,
-      //         },
-      //       },
-      //     })),
-      //   },
-      // };
-
-      // await db.workout.create({ data: workout });
+      const workouts = await db.workout.findMany({
+        where: { userId },
+        include: { exercises: true },
+      });
 
       res.status(200).json(workouts);
     }
       break;
     case 'PATCH': {
-      const data = JSON.parse(req.body) as Workout;
+      const { id, name, exercises } = JSON.parse(req.body) as WorkoutWithExercises;
       const userId = (session?.user as UserWithId).id;
 
-      const workout = {
-        ...data,
-        userId,
-      };
-
       await db.workout.update({
-        where: { id: workout.id },
-        data: workout,
+        where: { id },
+        data: {
+          name,
+          userId,
+        },
       });
 
-      const workouts = await db.workout.findMany({ where: { userId } });
+      console.log(exercises);
+
+      await Promise.all(exercises.map((e) => {
+        if (e.workoutId) {
+          return db.workoutExercise.update({
+            where: { id: e.id },
+            data: e,
+          });
+        }
+
+        return db.workoutExercise.create({
+          data: {
+            name: e.name,
+            sets: e.sets,
+            reps: e.reps,
+            rest: e.rest,
+            weight: e.weight,
+            exerciseId: e.exerciseId,
+            workoutId: id,
+          },
+        });
+      }));
+
+      const workouts = await db.workout.findMany({
+        where: { userId },
+        include: { exercises: true },
+      });
 
       res.status(200).json(workouts);
     }
@@ -75,7 +90,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      const workouts = await db.workout.findMany({ where: { userId } });
+      const workouts = await db.workout.findMany({
+        where: { userId },
+        include: { exercises: true },
+      });
 
       res.status(200).json(workouts);
     }

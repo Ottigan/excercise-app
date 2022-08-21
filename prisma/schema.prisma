@@ -75,15 +75,14 @@ model Workout {
 }
 
 model WorkoutExercise {
-  id          String  @id @default(cuid())
-  name        String
-  sets        Int?    @default(0)
-  reps        Int?    @default(0)
-  rest        Float?  @default(0)
-  weight      Float?  @default(0)
-  description String?
-  workoutId   String?
-  exerciseId  String
+  id         String  @id @default(cuid())
+  name       String
+  sets       Int?    @default(0)
+  reps       Int?    @default(0)
+  rest       Float?  @default(0)
+  weight     Float?  @default(0)
+  workoutId  String?
+  exerciseId String
 
   setData  WorkoutExerciseSet[]
   workout  Workout?             @relation(fields: [workoutId], references: [id])

@@ -19,7 +19,7 @@ function Table(props: TableProps) {
 
   return (
     <div className="relative">
-      {isLoading && <Loader isLoading={isLoading} />}
+      {isLoading && <Loader />}
       <table className={cn('bg-slate-100', className, styles.table)}>{children}</table>
     </div>
   );

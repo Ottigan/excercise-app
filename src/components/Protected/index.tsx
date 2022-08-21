@@ -24,7 +24,7 @@ function Protected({ children }: ProtectedProps) {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <Loader isLoading />
+      <Loader />
     </div>
   );
 }

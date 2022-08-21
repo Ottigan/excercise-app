@@ -23,6 +23,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).json(exercises);
     }
       break;
+    case 'GET': {
+      const userId = (session?.user as UserWithId).id;
+
+      const exercises = await db.exercise.findMany({ where: { userId } });
+
+      res.status(200).json(exercises);
+    }
+      break;
     case 'PATCH': {
       const data = JSON.parse(req.body) as Exercise;
       const userId = (session?.user as UserWithId).id;

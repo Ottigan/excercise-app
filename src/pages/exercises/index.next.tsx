@@ -24,6 +24,18 @@ export default function Page(props: ExercisesProps) {
   const [modalType, setModalType] = useState<'create' | 'update'>('create');
   const exerciseController = useFetch<Exercise[]>();
 
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { target: { value, name } } = e;
+
+    handleFormData({ type: name, payload: value });
+  }, []);
+
+  const handleView = useCallback((exercise: Exercise) => {
+    handleFormData({ type: 'set', payload: exercise });
+    setModalType('update');
+    handleModalVisibility();
+  }, [handleModalVisibility]);
+
   const handleCreate = useCallback((e: FormEvent) => {
     e.preventDefault();
 
@@ -69,18 +81,6 @@ export default function Page(props: ExercisesProps) {
     }
   }, [exerciseController.data]);
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const { target: { value, name } } = e;
-
-    handleFormData({ type: name, payload: value });
-  }, []);
-
-  const handleView = useCallback((exercise: Exercise) => {
-    handleFormData({ type: 'set', payload: exercise });
-    setModalType('update');
-    handleModalVisibility();
-  }, [handleModalVisibility]);
-
   return (
     <>
       <Head>
@@ -100,7 +100,6 @@ export default function Page(props: ExercisesProps) {
           className="basis-4/12 mb-3"
         >
           Create
-
         </Button>
         <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
           <form className="flex flex-wrap gap-2 mb-9" autoComplete="off">

@@ -1,4 +1,4 @@
-import { Workout } from '@prisma/client';
+import { WorkoutExercise } from '@prisma/client';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import Modal from 'components/Modal';
@@ -8,22 +8,41 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { authOptions, UserWithId } from 'pages/api/auth/[...nextauth].next';
 import { ChangeEvent, FormEvent, useCallback, useEffect, useReducer, useState } from 'react';
+import { WorkoutWithExercises } from 'types';
 import { getServerSession } from 'utils/auth';
 import { db } from 'utils/db';
-import Exercises from './components/Exercises';
+import WorkoutExercises from './components/WorkoutExercises';
 import Workouts from './components/Workouts';
-import { formDataTemplate, reducer } from './utils';
+import { formDataTemplate, getTemplate, reducer } from './utils';
 
 interface WorkoutsProps {
-  workouts: Workout[];
+  workouts: WorkoutWithExercises[];
 }
 
 export default function Page(props: WorkoutsProps) {
   const [workouts, setWorkouts] = useState(props.workouts);
   const [formData, handleFormData] = useReducer(reducer, formDataTemplate);
+  const [exercises, setExercises] = useState<WorkoutExercise[]>([getTemplate()]);
   const [isModalVisible, handleModalVisibility] = useModal();
   const [modalType, setModalType] = useState<'create' | 'update'>('create');
-  const workoutController = useFetch<Workout[]>();
+  const workoutController = useFetch<WorkoutWithExercises[]>();
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { target: { value: payload, name } } = e;
+
+    handleFormData({ type: name, payload });
+  }, []);
+
+  const handleView = useCallback((payload: WorkoutWithExercises) => {
+    handleFormData({ type: 'set', payload });
+    setExercises(payload.exercises);
+    setModalType('update');
+    handleModalVisibility();
+  }, [handleModalVisibility]);
+
+  const handleWorkoutExercises = useCallback((payload: WorkoutExercise[]) => {
+    handleFormData({ type: 'exercises', payload });
+  }, []);
 
   const handleCreate = useCallback((e: FormEvent) => {
     e.preventDefault();
@@ -70,18 +89,6 @@ export default function Page(props: WorkoutsProps) {
     }
   }, [workoutController.data]);
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const { target: { value, name } } = e;
-
-    handleFormData({ type: name, payload: value });
-  }, []);
-
-  const handleView = useCallback((workout: Workout) => {
-    handleFormData({ type: 'set', payload: workout });
-    setModalType('update');
-    handleModalVisibility();
-  }, [handleModalVisibility]);
-
   return (
     <>
       <Head>
@@ -91,6 +98,18 @@ export default function Page(props: WorkoutsProps) {
       </Head>
 
       <main className="p-3">
+        <Button
+          onClick={() => {
+            setModalType('create');
+            handleFormData({ type: 'clear' });
+            setExercises([getTemplate()]);
+            handleModalVisibility();
+          }}
+          disabled={workoutController.isLoading}
+          className="basis-4/12 mb-3"
+        >
+          Create
+        </Button>
         <Modal isVisible={isModalVisible} visibilityHandler={handleModalVisibility}>
           <form className="flex flex-wrap gap-2 mb-9" autoComplete="off">
             <Input
@@ -99,7 +118,7 @@ export default function Page(props: WorkoutsProps) {
               label="Name"
               name="name"
             />
-            <Exercises />
+            <WorkoutExercises exercises={exercises} onChange={handleWorkoutExercises} />
             {modalType === 'create'
               ? (
                 <Button
@@ -123,7 +142,6 @@ export default function Page(props: WorkoutsProps) {
               )}
           </form>
         </Modal>
-        <Button onClick={handleModalVisibility} className="basis-4/12 mb-3">Create</Button>
         <Workouts
           isLoading={workoutController.isLoading}
           workouts={workouts}
@@ -138,7 +156,10 @@ export default function Page(props: WorkoutsProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  const workouts = await db.workout.findMany({ where: { userId: (session?.user as UserWithId).id } });
+  const workouts: WorkoutWithExercises[] = await db.workout.findMany({
+    where: { userId: (session?.user as UserWithId).id },
+    include: { exercises: true },
+  });
 
   return { props: { workouts } };
 };

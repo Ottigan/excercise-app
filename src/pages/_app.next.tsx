@@ -5,7 +5,7 @@ import Protected from 'components/Protected';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import '../styles/globals.css';
+import '../styles/globals.scss';
 
 config.autoAddCss = false;
 

@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { PrismaClient } from '@prisma/client';
-
-export {};
+export { };
 
 declare global {
   namespace NodeJS {

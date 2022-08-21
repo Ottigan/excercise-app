@@ -17,7 +17,7 @@ export default function Main() {
 
   const content = (() => {
     if (status === 'loading') {
-      return <Loader isLoading />;
+      return <Loader />;
     }
 
     if (session?.error || status === 'unauthenticated') {
