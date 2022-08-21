@@ -1,0 +1,10 @@
+@use 'styles/variables';
+
+.main {
+  height: calc(100% - variables.$header-height);
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

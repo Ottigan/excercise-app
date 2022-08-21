@@ -1,15 +1,26 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider             = "mysql"
-  url                  = env("DATABASE_URL")
+  url                  = env("DATABASE_URL_LOCAL")
   referentialIntegrity = "prisma"
 }
 
 generator js {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  surname       String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  accounts  Account[]
+  sessions  Session[]
+  exercises Exercise[]
+  workouts  Workout[]
 }
 
 model Account {
@@ -36,18 +47,54 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String
-  surname       String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+model Exercise {
+  id          String  @id @default(cuid())
+  name        String
+  sets        Int?    @default(0)
+  reps        Int?    @default(0)
+  rest        Float?  @default(0)
+  weight      Float?  @default(0)
+  description String?
+  userId      String?
+
+  workoutExercise WorkoutExercise[]
+  user            User?             @relation(fields: [userId], references: [id])
+}
+
+model Workout {
+  id     String  @id @default(cuid())
+  name   String
+  userId String?
+
+  exercises WorkoutExercise[]
+  user      User?             @relation(fields: [userId], references: [id])
+}
+
+model WorkoutExercise {
+  id         String  @id @default(cuid())
+  name       String
+  sets       Int?    @default(0)
+  reps       Int?    @default(0)
+  rest       Float?  @default(0)
+  weight     Float?  @default(0)
+  workoutId  String?
+  exerciseId String
+
+  setData  WorkoutExerciseSet[]
+  workout  Workout?             @relation(fields: [workoutId], references: [id])
+  exercise Exercise?            @relation(fields: [exerciseId], references: [id])
+}
+
+model WorkoutExerciseSet {
+  id                String  @id @default(cuid())
+  reps              Int?    @default(0)
+  workoutExerciseId String?
+
+  workoutExercise WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
 }
 
 model VerificationToken {
